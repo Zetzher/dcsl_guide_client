@@ -1,0 +1,9 @@
+.switch-theme {
+    position: sticky;
+    top: 90vh;
+    margin-left: 75vw;
+}
+
+.test {
+    font-family: 'Archivo Narrow', sans-serif;
+}
