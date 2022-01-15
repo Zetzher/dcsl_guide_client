@@ -19,6 +19,7 @@
     -moz-box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
     box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
     z-index: 10;
+    margin-top: 10px;
 }
 
 .alert-spotted-start {
