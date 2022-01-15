@@ -8,18 +8,7 @@
     position: sticky;
     top: 90vh;
     margin-left: 85vw;
-}
-
-.price-bubble {
-    display: flex;
-    border: 1px #C5B8CB outset;
-    border-radius: 10px;
-    padding: 10px 10px 0 10px;
-    height: 30px;
-    align-items: center;
-    -webkit-box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
-    box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
+    z-index: 10;
 }
 
 .button-purchase {
@@ -29,6 +18,7 @@
     -webkit-box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
     box-shadow: 0px 3px 9px -2px rgba(0,0,0,0.75);
+    z-index: 10;
 }
 
 .alert-spotted-start {
@@ -49,6 +39,14 @@
     top: 0;
     margin-left: 10vw;
     z-index: 2;
+}
+
+.section-catalog-title {
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  position: relative;
+  top: 20px;
 }
 
 @-webkit-keyframes flip-in-hor-top {
@@ -75,8 +73,6 @@
       opacity: 1;
     }
   }
-  
-  
 
   @-webkit-keyframes flip-out-hor-top {
     0% {
