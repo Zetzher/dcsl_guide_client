@@ -235,7 +235,14 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
             {visible && <Drawer phoneInfo={phoneInfo} visible={visible} onClose={onClose} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
             <section style={{ backgroundColor: webTheme, width: '100vw' }}>
                 <span className="section-catalog-title-container">
-                    <h1 className="section-catalog-title">Press a picture to watch more details about the phone</h1>
+                    <h1 style={{
+                        marginLeft: 10,
+                        marginRight: 10,
+                        textAlign: 'center',
+                        position: 'relative',
+                        top: 20,
+                        color: webThemeBorder
+                    }}>Press a picture to watch more details about the phone</h1>
                 </span>
                 {
                     feedback !== '' && <div className={dynamicFeedback}>
@@ -262,6 +269,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                                         borderBottomRightRadius: 20,
                                         marginLeft: 10,
                                         marginRight: 10,
+                                        marginBottom: key === list.length - 1 ? 50 : 0,
                                         zIndex: 1
                                     }}
                                     cover={<img alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}

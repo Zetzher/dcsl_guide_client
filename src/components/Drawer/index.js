@@ -37,9 +37,9 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
             extra={
                 <Space>
                     {editStatus ? <Button onClick={() => saveInfo(_id, phoneDescription, phonePrice)}>Save</Button> : <Button onClick={editInfo}>Edit</Button>}
-                    <Button type='danger' onClick={() => deletePhone(_id)}>
+                    <Button style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder }} onClick={() => deletePhone(_id)}>
                         Delete
-                        </Button>
+                    </Button>
                 </Space>
             }
         >
@@ -51,8 +51,8 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
                 </>
                 :
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <textarea className="edit-phone-input" value={phoneDescription} placeholder={description} onChange={e => setPhoneDescription(e.target.value)} />
-                    <input className="edit-phone-input" value={phonePrice} placeholder={price} onChange={e => regex(e.target.value)} />
+                    <textarea className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phoneDescription} placeholder={description} onChange={e => setPhoneDescription(e.target.value)} />
+                    <input className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phonePrice} placeholder={price} onChange={e => regex(e.target.value)} />
                 </div>
             }
         </Drawer>

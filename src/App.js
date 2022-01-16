@@ -30,7 +30,7 @@ const App = () => {
 
   return (
     <>
-      <div style={{ position: 'fixed', right: 25, zIndex: 10, top: 50 }}>
+      <div style={{ position: 'fixed', right: 25, zIndex: 10, top: 60 }}>
         <Switch logic={onChange} trueChild="Light" falseChild="Dark" initialState={true} />
       </div>
       <Routes>
