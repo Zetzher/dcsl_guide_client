@@ -1,0 +1,10 @@
+.phone-info-text {
+    font-size: 13px;
+}
+
+.edit-phone-input {
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px outset;
+    padding: 10px 0 10px 20px;
+}

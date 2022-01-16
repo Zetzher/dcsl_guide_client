@@ -37,6 +37,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
     const retrievePhones = async () => {
         try {
             const response = await axios.get('http://localhost:4000/phones');
+
             const { data } = response;
 
             setList(data);
@@ -126,15 +127,24 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         };
     };
 
-    const editPhone = async (_id, model, description, price) => {
+    const editPhone = async (_id, description, price) => {
         try {
-            const response = await axios.put(`http://localhost:4000/phones/edit/${_id}`, { model, description, price });
+            const response = await axios.put(`http://localhost:4000/phones/edit/${_id}`, { description, price });
 
             const { data: { message }, status } = response;
 
             if (status === 200) {
                 setFeedback(message);
                 setStatusFeedback(true);
+
+                [...list].map(data => {
+                    if (data.id === _id) {
+                        data.description = description
+                        data.price = price
+                    }
+                });
+
+
 
                 setTimeout(() => {
                     setDynamicFeedback('alert-spotted-end');
@@ -222,7 +232,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     return (
         <>
-            {visible && <Drawer phoneInfo={phoneInfo} visible={visible} onClose={onClose} editPhone={id => editPhone(id)} deletePhone={id => deletePhone(id)} />}
+            {visible && <Drawer phoneInfo={phoneInfo} visible={visible} onClose={onClose} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
             <section style={{ backgroundColor: webTheme, width: '100vw' }}>
                 <span className="section-catalog-title-container">
                     <h1 className="section-catalog-title">Press a picture to watch more details about the phone</h1>
@@ -236,7 +246,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {
                         list.map((data, key) => {
-                            const { id, image, manufacturer, model, price, stock } = data;
+                            const { id, image, model, price, stock, memory, camera } = data;
 
                             return (
 
@@ -257,8 +267,10 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                                     cover={<img alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}
                                 >
 
-                                    <div data-cy="model-title" style={{ height: 80 }}>
-                                        <h1>{model} - {manufacturer}</h1>
+                                    <div data-cy="model-title" style={{ height: 80, flexDirection: 'column' }}>
+                                        <h1 style={{ fontSize: 14 }}>{model}</h1>
+                                        <h4 style={{ fontSize: 10 }}>{camera}</h4>
+                                        <h4 style={{ fontSize: 10 }}>{memory}</h4>
                                     </div>
                                     <span className="price"><h3>{price} €</h3></span>
 
