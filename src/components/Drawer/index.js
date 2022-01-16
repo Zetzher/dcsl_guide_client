@@ -36,8 +36,8 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
             bodyStyle={{ backgroundColor: webThemeComplementary }}
             extra={
                 <Space>
-                    {editStatus ? <Button onClick={() => saveInfo(_id, phoneDescription, phonePrice)}>Save</Button> : <Button onClick={editInfo}>Edit</Button>}
-                    <Button style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder }} onClick={() => deletePhone(_id)}>
+                    {editStatus ? <Button data-cy='save-info-phone' onClick={() => saveInfo(_id, phoneDescription, phonePrice)}>Save</Button> : <Button data-cy='edit-phone' onClick={editInfo}>Edit</Button>}
+                    <Button data-cy='delete-phone' style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder }} onClick={() => deletePhone(_id)}>
                         Delete
                     </Button>
                 </Space>
@@ -51,8 +51,8 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
                 </>
                 :
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <textarea className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phoneDescription} placeholder={description} onChange={e => setPhoneDescription(e.target.value)} />
-                    <input className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phonePrice} placeholder={price} onChange={e => regex(e.target.value)} />
+                    <textarea data-cy='input-description' className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phoneDescription} placeholder={description} onChange={e => setPhoneDescription(e.target.value)} />
+                    <input data-cy='input-price' className="edit-phone-input" style={{ borderColor: webThemeBorder }} value={phonePrice} placeholder={price} onChange={e => regex(e.target.value)} />
                 </div>
             }
         </Drawer>

@@ -272,7 +272,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                                         marginBottom: key === list.length - 1 ? 50 : 0,
                                         zIndex: 1
                                     }}
-                                    cover={<img alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}
+                                    cover={<img data-cy='img-details' alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}
                                 >
 
                                     <div data-cy="model-title" style={{ height: 80, flexDirection: 'column' }}>
