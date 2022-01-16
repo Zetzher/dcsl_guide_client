@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Card } from 'antd';
-import { ModalInfo, Switch } from '../../components/index';
+import { Drawer } from '../../components/index';
 import color from '../../color-palette';
 import './index.css';
 
 const checkUserMobile = window.navigator.userAgent;
 
 
-const Catalog = () => {
+const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     const navigate = useNavigate();
 
@@ -17,27 +17,22 @@ const Catalog = () => {
 
     const [list, setList] = useState([]);
 
-    const [inputValue, setInputValue] = useState("");
+    const [phoneInfo, setPhoneInfo] = useState();
 
-    const [webTheme, setWebTheme] = useState(light);
-    const [webThemeComplementary, setWebThemeComplementary] = useState(lightComplementary);
-    const [webThemeBorder, setWebThemeBorder] = useState(lightThemeBorder);
+    const [visible, setVisible] = useState(false);
+    const [placement, setPlacement] = useState('right');
+
+    const showDrawer = () => {
+        setVisible(true);
+    };
+
+    const onClose = () => {
+        setVisible(false);
+    };
 
     const [feedback, setFeedback] = useState('');
     const [statusFeedback, setStatusFeedback] = useState('');
     const [dynamicFeedback, setDynamicFeedback] = useState('alert-spotted-start')
-
-    const onChange = (checked) => {
-        if (checked) {
-            setWebTheme(light);
-            setWebThemeComplementary(lightComplementary);
-            setWebThemeBorder(lightThemeBorder)
-        } else {
-            setWebTheme(dark);
-            setWebThemeComplementary(darkComplementary);
-            setWebThemeBorder(darkThemeBorder);
-        }
-    };
 
     const retrievePhones = async () => {
         try {
@@ -58,7 +53,8 @@ const Catalog = () => {
             const { data, status } = response;
 
             if (status === 200) {
-                navigate(`/product-info`, { state: { phone: data[0] } });
+                setPhoneInfo(data[0]);
+                showDrawer();
             };
 
         } catch (err) {
@@ -130,33 +126,112 @@ const Catalog = () => {
         };
     };
 
+    const editPhone = async (_id, model, description, price) => {
+        try {
+            const response = await axios.put(`http://localhost:4000/phones/edit/${_id}`, { model, description, price });
+
+            const { data: { message }, status } = response;
+
+            if (status === 200) {
+                setFeedback(message);
+                setStatusFeedback(true);
+
+                setTimeout(() => {
+                    setDynamicFeedback('alert-spotted-end');
+                }, 2000);
+
+                setTimeout(() => {
+                    setFeedback('');
+                    setDynamicFeedback('alert-spotted-start');
+                }, 2500);
+            };
+        } catch (err) {
+            setStatusFeedback(false);
+
+            const { response: { data: { message }, status } } = err;
+
+            if (status === 404) {
+                setFeedback(message);
+            } else if (status === 500) {
+                setFeedback(message);
+            };
+
+            setTimeout(() => {
+                setDynamicFeedback('alert-spotted-end');
+            }, 2000);
+
+            setTimeout(() => {
+                setFeedback('');
+                setDynamicFeedback('alert-spotted-start');
+            }, 2500);
+        }
+
+
+        onClose();
+    };
+
+    const deletePhone = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:4000/phones/delete/${id}`);
+
+            const { data: { message }, status } = response;
+
+            if (status === 200) {
+                const deleteOne = [...list].filter(data => data.id !== id);
+
+                setList(deleteOne);
+                setFeedback(message);
+                setStatusFeedback(true);
+
+                setTimeout(() => {
+                    setDynamicFeedback('alert-spotted-end');
+                }, 2000);
+
+                setTimeout(() => {
+                    setFeedback('');
+                    setDynamicFeedback('alert-spotted-start');
+                }, 2500);
+            };
+        } catch (err) {
+            setStatusFeedback(false);
+
+            const { response: { data: { message }, status } } = err;
+
+            if (status === 404) {
+                setFeedback(message);
+            } else if (status === 500) {
+                setFeedback(message);
+            };
+
+            setTimeout(() => {
+                setDynamicFeedback('alert-spotted-end');
+            }, 2000);
+
+            setTimeout(() => {
+                setFeedback('');
+                setDynamicFeedback('alert-spotted-start');
+            }, 2500);
+        }
+
+        onClose();
+    };
 
     useEffect(() => {
         retrievePhones();
     }, [])
 
-
-
     return (
         <>
-
-
-
-
+            {visible && <Drawer phoneInfo={phoneInfo} visible={visible} onClose={onClose} editPhone={id => editPhone(id)} deletePhone={id => deletePhone(id)} />}
             <section style={{ backgroundColor: webTheme, width: '100vw' }}>
                 <span className="section-catalog-title-container">
                     <h1 className="section-catalog-title">Press a picture to watch more details about the phone</h1>
-
                 </span>
                 {
                     feedback !== '' && <div className={dynamicFeedback}>
                         <Alert message={feedback} type={statusFeedback ? 'success' : 'error'} showIcon />
                     </div>
                 }
-
-                <div className="switch-theme">
-                    <Switch logic={onChange} trueChild="Light" falseChild="Dark" initialState={true} />
-                </div>
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {
@@ -176,7 +251,8 @@ const Catalog = () => {
                                         borderBottomLeftRadius: 20,
                                         borderBottomRightRadius: 20,
                                         marginLeft: 10,
-                                        marginRight: 10
+                                        marginRight: 10,
+                                        zIndex: 1
                                     }}
                                     cover={<img alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}
                                 >
@@ -186,7 +262,7 @@ const Catalog = () => {
                                     </div>
                                     <span className="price"><h3>{price} €</h3></span>
 
-                                    <button data-cy="purchase-button" className="button-purchase" onClick={() => purchasePhone(id)}>
+                                    <button data-cy="purchase-button" className="purchase-button" onClick={() => purchasePhone(id)}>
                                         <h3 style={{ marginLeft: 2, marginRight: 2, marginTop: 2 }}>Press here to buy now, there are only {stock} left</h3>
                                     </button>
                                 </Card>

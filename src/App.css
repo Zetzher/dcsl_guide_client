@@ -151,3 +151,9 @@ breakpoint {
     max-width: 24%;
   }
 }
+
+.switch-theme {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
