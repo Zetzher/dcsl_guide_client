@@ -134,6 +134,18 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         };
     };
 
+    const addPhone = async ({ model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price }) => {
+
+        // const phoneInfo = model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price;
+
+        try {
+            const response = await axios.post(`http://localhost:4000/phones/create`, {  });
+
+        } catch (err) {
+
+        }
+    };
+
     const editPhone = async (_id, description, price) => {
         try {
             const response = await axios.put(`http://localhost:4000/phones/edit/${_id}`, { description, price });
@@ -240,7 +252,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
     return (
         <>
             {visibleDetails && <DrawerDetails phoneInfo={phoneInfo} visible={visibleDetails} onClose={() => onClose('details')} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
-            {visibleAdd && <DrawerAdd action visible={visibleAdd} onClose={() => onClose('add')} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
+            {visibleAdd && <DrawerAdd action={addPhone} visible={visibleAdd} onClose={() => onClose('add')} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
             <section style={{ backgroundColor: webTheme, width: '100vw' }}>
                 <span className="section-catalog-title-container">
                     <h1 style={{

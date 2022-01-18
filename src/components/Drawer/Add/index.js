@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Drawer, Button, Space, Radio } from 'antd';
-import { DrawerProps } from 'antd/es/drawer';
-import { RadioChangeEvent } from 'antd/es/radio';
+import { Drawer, Button, Space } from 'antd';
 
 const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, webThemeBorder }) => {
 
-  const [status, newStatus] = useState(false);
+  const [status, setStatus] = useState(false);
 
   const [phoneMain, setPhoneMain] = useState('');
   const [phoneSelfie, setPhoneSelfie] = useState('');
@@ -24,7 +22,10 @@ const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, 
     if (!RegExp(/[a-zA-Z-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/).test(num)) {
       setPhonePrice(num);
     };
+
+    phonePrice.length > 0 ? setStatus(!status) : setStatus(!status);
   };
+
 
   return (
     <Drawer
@@ -32,27 +33,28 @@ const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, 
       placement={'right'}
       onClose={onClose}
       visible={visible}
+      bodyStyle={{ backgroundColor: webThemeComplementary }}
       extra={
         <Space>
-          <Button style={{ opacity: !status ? 0.3 : 1 }} type="primary" onClick={onClose}>
+          <Button style={{ opacity: !status ? 0.3 : 1, backgroundColor: webTheme }} onClick={() => action({ model: phoneModel, manufacturer: phoneManufacturer, description: phoneDescription, main: phoneMain, selfie: phoneSelfie, features: phoneFeatures, body: phoneBody, memory: phoneMemory, chipset: phoneChipset, display: phoneDisplay, platform: phonePlatform, price: phonePrice })}>
             Save
           </Button>
         </Space>
       }
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <input data-cy='input-model' className="edit-phone-input" placerHoler={'Model'} style={{ borderColor: webThemeBorder }} value={phoneModel} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-manufacturer' className="edit-phone-input" placerHoler={'Manufacturer'} style={{ borderColor: webThemeBorder }} value={phoneManufacturer} onChange={e => regex(e.target.value)} />
-        <textarea data-cy='input-description' className="edit-phone-input" placerHoler={'Description'} style={{ borderColor: webThemeBorder }} value={phoneDescription} onChange={e => setPhoneDescription(e.target.value)} />
-        <input data-cy='input-main-camera' className="edit-phone-input" placerHoler={'Main Camera'} style={{ borderColor: webThemeBorder }} value={phoneMain} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-selfie-camera' className="edit-phone-input" placerHoler={'Selfie Camera'} style={{ borderColor: webThemeBorder }} value={phoneSelfie} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-features-camera' className="edit-phone-input" placerHoler={'Features Camera'} style={{ borderColor: webThemeBorder }} value={phoneFeatures} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-body' className="edit-phone-input" placerHoler={'Body'} style={{ borderColor: webThemeBorder }} value={phoneBody} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-memory' className="edit-phone-input" placerHoler={'Memory'} style={{ borderColor: webThemeBorder }} value={phoneMemory} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-chipset' className="edit-phone-input" placerHoler={'Chipset'} style={{ borderColor: webThemeBorder }} value={phoneChipset} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-display' className="edit-phone-input" placerHoler={'Display'} style={{ borderColor: webThemeBorder }} value={phoneDisplay} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-platform' className="edit-phone-input" placerHoler={'Platform'} style={{ borderColor: webThemeBorder }} value={phonePlatform} onChange={e => regex(e.target.value)} />
-        <input data-cy='input-price' className="edit-phone-input" placerHoler={'Price'} style={{ borderColor: webThemeBorder }} value={phonePrice} onChange={e => regex(e.target.value)} />
+        <input data-cy='input-model' className="edit-phone-input" placeholder={'Model'} style={{ borderColor: webThemeBorder }} value={phoneModel} onChange={e => setPhoneModel(e.target.value)} />
+        <input data-cy='input-manufacturer' className="edit-phone-input" placeholder={'Manufacturer'} style={{ borderColor: webThemeBorder }} value={phoneManufacturer} onChange={e => setPhoneManufacturer(e.target.value)} />
+        <textarea data-cy='input-description' className="edit-phone-input" placeholder={'Description'} style={{ borderColor: webThemeBorder }} value={phoneDescription} onChange={e => setPhoneDescription(e.target.value)} />
+        <input data-cy='input-main-camera' className="edit-phone-input" placeholder={'Main Camera'} style={{ borderColor: webThemeBorder }} value={phoneMain} onChange={e => setPhoneMain(e.target.value)} />
+        <input data-cy='input-selfie-camera' className="edit-phone-input" placeholder={'Selfie Camera'} style={{ borderColor: webThemeBorder }} value={phoneSelfie} onChange={e => setPhoneSelfie(e.target.value)} />
+        <input data-cy='input-features-camera' className="edit-phone-input" placeholder={'Features Camera'} style={{ borderColor: webThemeBorder }} value={phoneFeatures} onChange={e => setPhoneFeatures(e.target.value)} />
+        <input data-cy='input-body' className="edit-phone-input" placeholder={'Body'} style={{ borderColor: webThemeBorder }} value={phoneBody} onChange={e => setPhoneBody(e.target.value)} />
+        <input data-cy='input-memory' className="edit-phone-input" placeholder={'Memory'} style={{ borderColor: webThemeBorder }} value={phoneMemory} onChange={e => setPhoneMemory(e.target.value)} />
+        <input data-cy='input-chipset' className="edit-phone-input" placeholder={'Chipset'} style={{ borderColor: webThemeBorder }} value={phoneChipset} onChange={e => setPhoneChipset(e.target.value)} />
+        <input data-cy='input-display' className="edit-phone-input" placeholder={'Display'} style={{ borderColor: webThemeBorder }} value={phoneDisplay} onChange={e => setPhoneDisplay(e.target.value)} />
+        <input data-cy='input-platform' className="edit-phone-input" placeholder={'Platform'} style={{ borderColor: webThemeBorder }} value={phonePlatform} onChange={e => setPhonePlatform(e.target.value)} />
+        <input data-cy='input-price' className="edit-phone-input" placeholder={'Price (Mandatory)'} style={{ borderColor: webThemeBorder }} value={phonePrice} onChange={e => regex(e.target.value)} />
 
       </div>
     </Drawer>
