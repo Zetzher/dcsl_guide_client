@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Card } from 'antd';
-import { Drawer } from '../../components/index';
+import { PlusCircleFilled } from '@ant-design/icons';
+import { DrawerDetails, DrawerAdd } from '../../components/index';
 import color from '../../color-palette';
 import './index.css';
-
 const checkUserMobile = window.navigator.userAgent;
-
 
 const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
@@ -19,15 +18,23 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     const [phoneInfo, setPhoneInfo] = useState();
 
-    const [visible, setVisible] = useState(false);
-    const [placement, setPlacement] = useState('right');
+    const [visibleDetails, setVisibleDetails] = useState(false);
+    const [visibleAdd, setVisibleAdd] = useState(false);
 
-    const showDrawer = () => {
-        setVisible(true);
+    const showDrawer = (str) => {
+        if (str === 'details') {
+            setVisibleDetails(true);
+        } else if (str === 'add') {
+            setVisibleAdd(true);
+        }
     };
 
-    const onClose = () => {
-        setVisible(false);
+    const onClose = (str) => {
+        if (str === 'details') {
+            setVisibleDetails(false);
+        } else if (str === 'add') {
+            setVisibleAdd(false);
+        }
     };
 
     const [feedback, setFeedback] = useState('');
@@ -55,7 +62,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
             if (status === 200) {
                 setPhoneInfo(data[0]);
-                showDrawer();
+                showDrawer('details');
             };
 
         } catch (err) {
@@ -177,7 +184,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         }
 
 
-        onClose();
+        onClose('details');
     };
 
     const deletePhone = async (id) => {
@@ -223,7 +230,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
             }, 2500);
         }
 
-        onClose();
+        onClose('details');
     };
 
     useEffect(() => {
@@ -232,7 +239,8 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     return (
         <>
-            {visible && <Drawer phoneInfo={phoneInfo} visible={visible} onClose={onClose} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
+            {visibleDetails && <DrawerDetails phoneInfo={phoneInfo} visible={visibleDetails} onClose={() => onClose('details')} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
+            {visibleAdd && <DrawerAdd action visible={visibleAdd} onClose={() => onClose('add')} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
             <section style={{ backgroundColor: webTheme, width: '100vw' }}>
                 <span className="section-catalog-title-container">
                     <h1 style={{
@@ -286,12 +294,12 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                                         <h3 style={{ marginLeft: 2, marginRight: 2, marginTop: 2 }}>Press here to buy now, there are only {stock} left</h3>
                                     </button>
                                 </Card>
-
                             )
                         })
 
                     }
                 </div>
+                <PlusCircleFilled onClick={() => showDrawer('add')} style={{ position: 'fixed', bottom: 20, right: 20, fontSize: 30, color: webThemeBorder }} />
             </section>
         </>
     );

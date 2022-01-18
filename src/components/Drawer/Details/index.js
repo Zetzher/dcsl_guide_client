@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Drawer, Button, Space, Avatar } from 'antd';
 import './index.css';
 
-const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTheme, webThemeComplementary, webThemeBorder }) => {
+const DrawerDetails = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTheme, webThemeComplementary, webThemeBorder }) => {
 
     const { _id, model, image, description, price } = phoneInfo;
 
@@ -24,23 +24,23 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
         if (!RegExp(/[a-zA-Z-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/).test(num)) {
             setPhonePrice(num);
         };
-    }
+    };
 
     return (
         <Drawer
-            title={<><Avatar size={30} style={{ marginRight: 5 }} icon={<img alt={model} src={image} />} /> {model}</>}
+            title={<div style={{ display: 'flex', alignItems: 'center' }}><Avatar size={30} style={{ marginRight: 5 }} icon={<img alt={model} src={image} />} /> {model}</div>}
             placement={'top'}
             width={'100vw'}
             onClose={onClose}
             visible={visible}
             bodyStyle={{ backgroundColor: webThemeComplementary }}
             extra={
-                <Space>
+                <div style={{ left: 10 }}>
                     {editStatus ? <Button data-cy='save-info-phone' onClick={() => saveInfo(_id, phoneDescription, phonePrice)}>Save</Button> : <Button data-cy='edit-phone' onClick={editInfo}>Edit</Button>}
-                    <Button data-cy='delete-phone' style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder }} onClick={() => deletePhone(_id)}>
+                    <Button data-cy='delete-phone' style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder, left: 10 }} onClick={() => deletePhone(_id)}>
                         Delete
                     </Button>
-                </Space>
+                </div>
             }
         >
 
@@ -59,4 +59,4 @@ const DrawerInfo = ({ phoneInfo, visible, onClose, editPhone, deletePhone, webTh
     )
 }
 
-export default DrawerInfo;
+export default DrawerDetails;
