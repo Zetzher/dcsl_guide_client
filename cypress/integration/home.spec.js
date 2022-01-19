@@ -48,6 +48,25 @@ describe('test home', () => {
         cy.get("[data-cy=delete-phone]").click();
 
     });
+
+    it('add a phone', () => {
+        cy.get("[data-cy=add-phone-drawer-button]").click()
+ 
+        cy.get("[data-cy=input-model]").type('samsung test');
+        cy.get("[data-cy=input-manufacturer]").type('samsung');
+        cy.get("[data-cy=input-description]").type('a huge phone');
+        cy.get("[data-cy=input-main-camera]").type('12 px');
+        cy.get("[data-cy=input-selfie-camera]").type('13 px');
+        cy.get("[data-cy=input-features-camera]").type('testing');
+        cy.get("[data-cy=input-body]").type('12 kg');
+        cy.get("[data-cy=input-memory]").type('14 gb');
+        cy.get("[data-cy=input-chipset]").type('testing');
+        cy.get("[data-cy=input-display]").type('test');
+        cy.get("[data-cy=input-platform]").type('android');
+        cy.get("[data-cy=input-price]").type('1234');
+ 
+        cy.get("[data-cy=add-new-phone]").click();
+    })
     */
-    
+
 });

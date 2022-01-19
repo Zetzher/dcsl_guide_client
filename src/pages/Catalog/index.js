@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, Card } from 'antd';
-import { PlusCircleFilled } from '@ant-design/icons';
 import { DrawerDetails, DrawerAdd } from '../../components/index';
 import color from '../../color-palette';
 import './index.css';
 const checkUserMobile = window.navigator.userAgent;
 
-const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
+const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, setVisibleAdd, status }) => {
 
     const navigate = useNavigate();
 
@@ -16,10 +15,11 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     const [list, setList] = useState([]);
 
+    const [loaded, setLoaded] = useState(false);
+
     const [phoneInfo, setPhoneInfo] = useState();
 
     const [visibleDetails, setVisibleDetails] = useState(false);
-    const [visibleAdd, setVisibleAdd] = useState(false);
 
     const showDrawer = (str) => {
         if (str === 'details') {
@@ -48,15 +48,16 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
             const { data } = response;
 
             setList(data);
-
+            setLoaded(true);
+            status(true)
         } catch (err) {
             console.error(err, 'error while retrieve the phone list');
         }
     };
 
-    const retrievePhoneInfo = async (id) => {
+    const retrievePhoneInfo = async (_id) => {
         try {
-            const response = await axios.get(`http://localhost:4000/phones/info/${id}`);
+            const response = await axios.get(`http://localhost:4000/phones/info/${_id}`);
 
             const { data, status } = response;
 
@@ -83,15 +84,15 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         }
     }
 
-    const purchasePhone = async (id) => {
+    const purchasePhone = async (_id) => {
         try {
-            const response = await axios.post(`http://localhost:4000/phones/purchase/${id}`);
+            const response = await axios.post(`http://localhost:4000/phones/purchase/${_id}`);
 
             const { data: { message }, status } = response;
 
             if (status === 200) {
                 const decreaseOne = [...list].map(data => {
-                    if (data.id === id) {
+                    if (data._id === _id) {
                         data.stock = data.stock - 1
                     }
                     return data;
@@ -136,13 +137,46 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
 
     const addPhone = async ({ model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price }) => {
 
-        // const phoneInfo = model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price;
-
+        const phoneInfo = { model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price };
         try {
-            const response = await axios.post(`http://localhost:4000/phones/create`, {  });
+            const response = await axios.post(`http://localhost:4000/phones/create`, { phoneInfo });
+            setVisibleAdd(false);
+            const { data: { message, phone }, status } = response;
 
+            if (status === 200) {
+                setStatusFeedback(true);
+                setFeedback(message);
+
+                setList([{ ...phone }, ...list]);
+
+                setTimeout(() => {
+                    setDynamicFeedback('alert-spotted-end');
+                }, 2000);
+
+                setTimeout(() => {
+                    setFeedback('');
+                    setDynamicFeedback('alert-spotted-start');
+                }, 2500);
+            };
         } catch (err) {
+            setStatusFeedback(false);
 
+            const { response: { data: { message }, status } } = err;
+
+            if (status === 404) {
+                setFeedback(message);
+            } else if (status === 500) {
+                setFeedback(message);
+            };
+
+            setTimeout(() => {
+                setDynamicFeedback('alert-spotted-end');
+            }, 2000);
+
+            setTimeout(() => {
+                setFeedback('');
+                setDynamicFeedback('alert-spotted-start');
+            }, 2500);
         }
     };
 
@@ -157,7 +191,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
                 setStatusFeedback(true);
 
                 [...list].map(data => {
-                    if (data.id === _id) {
+                    if (data._id === _id) {
                         data.description = description
                         data.price = price
                     }
@@ -199,14 +233,14 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         onClose('details');
     };
 
-    const deletePhone = async (id) => {
+    const deletePhone = async (_id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/phones/delete/${id}`);
+            const response = await axios.delete(`http://localhost:4000/phones/delete/${_id}`);
 
             const { data: { message }, status } = response;
 
             if (status === 200) {
-                const deleteOne = [...list].filter(data => data.id !== id);
+                const deleteOne = [...list].filter(data => data._id !== _id);
 
                 setList(deleteOne);
                 setFeedback(message);
@@ -253,66 +287,72 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder }) => {
         <>
             {visibleDetails && <DrawerDetails phoneInfo={phoneInfo} visible={visibleDetails} onClose={() => onClose('details')} editPhone={editPhone} deletePhone={id => deletePhone(id)} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
             {visibleAdd && <DrawerAdd action={addPhone} visible={visibleAdd} onClose={() => onClose('add')} webTheme={webTheme} webThemeComplementary={webThemeComplementary} webThemeBorder={webThemeBorder} />}
-            <section style={{ backgroundColor: webTheme, width: '100vw' }}>
-                <span className="section-catalog-title-container">
-                    <h1 style={{
-                        marginLeft: 10,
-                        marginRight: 10,
-                        textAlign: 'center',
-                        position: 'relative',
-                        top: 20,
-                        color: webThemeBorder
-                    }}>Press a picture to watch more details about the phone</h1>
-                </span>
-                {
-                    feedback !== '' && <div className={dynamicFeedback}>
-                        <Alert message={feedback} type={statusFeedback ? 'success' : 'error'} showIcon />
-                    </div>
-                }
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+            {loaded ?
+                <section style={{ backgroundColor: webTheme, width: '100vw' }}>
+                    <span className="section-catalog-title-container">
+                        <h1 style={{
+                            marginLeft: 10,
+                            marginRight: 10,
+                            textAlign: 'center',
+                            position: 'relative',
+                            top: 20,
+                            color: webThemeBorder
+                        }}>Press a picture to watch more details about the phone</h1>
+                    </span>
                     {
-                        list.map((data, key) => {
-                            const { id, image, model, price, stock, memory, camera } = data;
-
-                            return (
-
-                                <Card
-                                    hoverable
-                                    style={{
-                                        width: 240,
-                                        marginTop: 50,
-                                        backgroundColor: webThemeComplementary,
-                                        borderColor: webThemeBorder, borderWidth: 3,
-                                        borderTopRightRadius: 20,
-                                        borderBottomLeftRadius: 20,
-                                        borderBottomRightRadius: 20,
-                                        marginLeft: 10,
-                                        marginRight: 10,
-                                        marginBottom: key === list.length - 1 ? 50 : 0,
-                                        zIndex: 1
-                                    }}
-                                    cover={<img data-cy='img-details' alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(id)} />}
-                                >
-
-                                    <div data-cy="model-title" style={{ height: 80, flexDirection: 'column' }}>
-                                        <h1 style={{ fontSize: 14 }}>{model}</h1>
-                                        <h4 style={{ fontSize: 10 }}>{camera}</h4>
-                                        <h4 style={{ fontSize: 10 }}>{memory}</h4>
-                                    </div>
-                                    <span className="price"><h3>{price} €</h3></span>
-
-                                    <button data-cy="purchase-button" className="purchase-button" onClick={() => purchasePhone(id)}>
-                                        <h3 style={{ marginLeft: 2, marginRight: 2, marginTop: 2 }}>Press here to buy now, there are only {stock} left</h3>
-                                    </button>
-                                </Card>
-                            )
-                        })
-
+                        feedback !== '' && <div className={dynamicFeedback}>
+                            <Alert message={feedback} type={statusFeedback ? 'success' : 'error'} showIcon />
+                        </div>
                     }
-                </div>
-                <PlusCircleFilled onClick={() => showDrawer('add')} style={{ position: 'fixed', bottom: 20, right: 20, fontSize: 30, color: webThemeBorder }} />
-            </section>
+
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {
+                            list.map(data => {
+                                const { _id, image, model, price, stock, memory, camera } = data;
+
+                                return (
+
+                                    <Card
+                                        hoverable
+                                        style={{
+                                            width: 240,
+                                            marginTop: 25,
+                                            backgroundColor: webThemeComplementary,
+                                            borderColor: webThemeBorder, borderWidth: 3,
+                                            borderTopRightRadius: 20,
+                                            borderBottomLeftRadius: 20,
+                                            borderBottomRightRadius: 20,
+                                            marginLeft: 10,
+                                            marginRight: 10,
+                                            marginBottom: 25,
+                                            zIndex: 1,
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'space-between'
+                                        }}
+                                        cover={<img data-cy='img-details' alt={model} src={image} style={{ borderTopRightRadius: 20, width: '100%' }} onClick={() => retrievePhoneInfo(_id)} />}
+                                    >
+                                        <div style={{ width: '100%' }}>
+                                            <div data-cy="model-title" style={{ height: 80, flexDirection: 'column' }}>
+                                                <h1 style={{ fontSize: 14 }}>{model}</h1>
+                                                <h4 style={{ fontSize: 10 }}>{camera}</h4>
+                                                <h4 style={{ fontSize: 10 }}>{memory}</h4>
+                                            </div>
+                                            <span className="price"><h3>{price} €</h3></span>
+
+                                            <button data-cy="purchase-button" className="purchase-button" onClick={() => purchasePhone(_id)}>
+                                                <h3 style={{ marginLeft: 2, marginRight: 2, marginTop: 2 }}>Press here to buy now, there are only {stock} left</h3>
+                                            </button>
+                                        </div>
+                                    </Card>
+                                )
+                            })
+
+                        }
+                    </div>
+                </section>
+                : <section style={{ width: '100vw', height: '100vh', backgroundColor: webTheme, display: 'flex', justifyContent: 'center', alignItems: 'center' }}><h1 style={{ fontSize: 30, color: webThemeBorder }}>Loading files</h1></section>
+            }
         </>
     );
 };

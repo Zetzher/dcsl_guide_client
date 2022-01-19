@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Drawer, Button, Space } from 'antd';
 
 const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, webThemeBorder }) => {
@@ -22,10 +22,11 @@ const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, 
     if (!RegExp(/[a-zA-Z-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/).test(num)) {
       setPhonePrice(num);
     };
-
-    phonePrice.length > 0 ? setStatus(!status) : setStatus(!status);
   };
 
+  useEffect(() => {
+    String(phonePrice).length > 0 ? setStatus(true) : setStatus(false);
+  }, [phonePrice])
 
   return (
     <Drawer
@@ -36,7 +37,7 @@ const DrawerAdd = ({ visible, onClose, action, webTheme, webThemeComplementary, 
       bodyStyle={{ backgroundColor: webThemeComplementary }}
       extra={
         <Space>
-          <Button style={{ opacity: !status ? 0.3 : 1, backgroundColor: webTheme }} onClick={() => action({ model: phoneModel, manufacturer: phoneManufacturer, description: phoneDescription, main: phoneMain, selfie: phoneSelfie, features: phoneFeatures, body: phoneBody, memory: phoneMemory, chipset: phoneChipset, display: phoneDisplay, platform: phonePlatform, price: phonePrice })}>
+          <Button data-cy='add-new-phone' style={{ opacity: !status ? 0.3 : 1 }} onClick={() => action({ model: phoneModel, manufacturer: phoneManufacturer, description: phoneDescription, main: phoneMain, selfie: phoneSelfie, features: phoneFeatures, body: phoneBody, memory: phoneMemory, chipset: phoneChipset, display: phoneDisplay, platform: phonePlatform, price: phonePrice })}>
             Save
           </Button>
         </Space>

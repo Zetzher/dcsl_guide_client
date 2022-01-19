@@ -15,9 +15,9 @@ const DrawerDetails = ({ phoneInfo, visible, onClose, editPhone, deletePhone, we
         setEditStatus(true);
     };
 
-    const saveInfo = (id, description, price) => {
+    const saveInfo = (_id, description, price) => {
 
-        editPhone(id, description, Number(price));
+        editPhone(_id, description, Number(price));
     };
 
     const regex = (num) => {
@@ -37,7 +37,7 @@ const DrawerDetails = ({ phoneInfo, visible, onClose, editPhone, deletePhone, we
             extra={
                 <div style={{ left: 10 }}>
                     {editStatus ? <Button data-cy='save-info-phone' onClick={() => saveInfo(_id, phoneDescription, phonePrice)}>Save</Button> : <Button data-cy='edit-phone' onClick={editInfo}>Edit</Button>}
-                    <Button data-cy='delete-phone' style={{ backgroundColor: webThemeComplementary, bordercolor: webThemeBorder, left: 10 }} onClick={() => deletePhone(_id)}>
+                    <Button data-cy='delete-phone' style={{ left: 10 }} onClick={() => deletePhone(_id)}>
                         Delete
                     </Button>
                 </div>
