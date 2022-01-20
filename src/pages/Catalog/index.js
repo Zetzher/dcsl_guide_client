@@ -43,7 +43,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
     const retrievePhones = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/phones');
+            const response = await axios.get(`${process.env.REACT_APP_API_URI}/phones`);
 
             const { data } = response;
 
@@ -57,7 +57,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
     const retrievePhoneInfo = async (_id) => {
         try {
-            const response = await axios.get(`http://localhost:4000/phones/info/${_id}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URI}/phones/info/${_id}`);
 
             const { data, status } = response;
 
@@ -86,7 +86,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
     const purchasePhone = async (_id) => {
         try {
-            const response = await axios.post(`http://localhost:4000/phones/purchase/${_id}`);
+            const response = await axios.post(`${process.env.REACT_APP_API_URI}/phones/purchase/${_id}`);
 
             const { data: { message }, status } = response;
 
@@ -139,7 +139,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
         const phoneInfo = { model, manufacturer, description, main, selfie, features, body, memory, chipset, display, platform, price };
         try {
-            const response = await axios.post(`http://localhost:4000/phones/create`, { phoneInfo });
+            const response = await axios.post(`${process.env.REACT_APP_API_URI}/phones/create`, { phoneInfo });
             setVisibleAdd(false);
             const { data: { message, phone }, status } = response;
 
@@ -182,7 +182,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
     const editPhone = async (_id, description, price) => {
         try {
-            const response = await axios.put(`http://localhost:4000/phones/edit/${_id}`, { description, price });
+            const response = await axios.put(`${process.env.REACT_APP_API_URI}/phones/edit/${_id}`, { description, price });
 
             const { data: { message }, status } = response;
 
@@ -235,7 +235,7 @@ const Catalog = ({ webTheme, webThemeComplementary, webThemeBorder, visibleAdd, 
 
     const deletePhone = async (_id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/phones/delete/${_id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_URI}/phones/delete/${_id}`);
 
             const { data: { message }, status } = response;
 
