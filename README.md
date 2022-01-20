@@ -44,10 +44,6 @@ npx cypress open
 **¡Important**
 Tests are muted, you should go to cypress/integration/home.spec.js.
 
-Also, if you are gonna use this repo in local, you should change the order of env CORS setup has inside my server file => {
-  process.env.PUBLIC_DOMAIN, process.env.FIREBASE_DOMAIN_BASE
-}
-
 .env => {
   development: REACT_APP_API_URI= http://localhost:4000
   production: REACT_APP_API_URI= https://gdsl-guidesmith-phone-list.herokuapp.com
