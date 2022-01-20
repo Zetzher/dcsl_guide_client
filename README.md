@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+<h1 align="center">Welcome to GDSL Guidesmith Phone List 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://gdslguidesmith.firebaseapp.com/" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> E-Commerce where you can buy, edit, delete and sell your device.
 
-## Available Scripts
+### 🏠 [Homepage]
+Firebase:
+(https://gdslguidesmith.firebaseapp.com/)
 
-In the project directory, you can run:
+### ✨ [Demo](https://gdslguidesmith.firebaseapp.com/)
 
-### `npm start`
+## Install
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```sh
+npm install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Usage
 
-### `npm test`
+```sh
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## User Stories
+- Switch which can change between light theme and dark theme.
 
-### `npm run build`
+- Pressing a picture, NOT a card, allow users to check phone's description, from this point, the user can edit and delete it.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Buying a phone pressing on the button which is placed at every card's bottom.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Add a new phone pressing on the button which the user will find at the right bottom corner, '+'.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Run tests
 
-### `npm run eject`
+```sh
+npx cypress open
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**¡Important**
+Tests are muted, you should go to cypress/integration/home.spec.js.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Also, if you are gonna use this repo in local, you should change the order of env CORS setup has inside my server file => {
+  process.env.PUBLIC_DOMAIN, process.env.FIREBASE_DOMAIN_BASE
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+.env => {
+  development: REACT_APP_API_URI= http://localhost:4000
+  production: REACT_APP_API_URI= https://gdsl-guidesmith-phone-list.herokuapp.com
+}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Author
 
-## Learn More
+👤 **Zetzher - Julián Abasolo**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Website: https://github.com/Zetzher
+* Github: [@zetzher](https://github.com/zetzher)
+* LinkedIn: [@https:\/\/www.linkedin.com\/in\/julian-abasolo\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/julian-abasolo\/)
